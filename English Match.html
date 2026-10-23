@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>English Match</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap">
+<style>
+:root{--plum:#5A1F4F;--plum2:#3E1437;--coral:#E9996B;--cream:#F6E6D8;--bg:#FBF4EE;--card:#fff;--ink:#2B1028;--mute:#85697F;--line:#EBDCD0;--acc:#8A3A7A;--chip:#F3E3F0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1E0F1B;--card:#2D1829;--ink:#F6E6D8;--mute:#BFA3B8;--line:#442A3F;--acc:#E9A3D6;--chip:#432540}}
+:root[data-theme="dark"]{--bg:#1E0F1B;--card:#2D1829;--ink:#F6E6D8;--mute:#BFA3B8;--line:#442A3F;--acc:#E9A3D6;--chip:#432540}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-size:16px;line-height:1.45}
+#app{max-width:430px;height:100%;margin:0 auto;position:relative;overflow:hidden;background:var(--bg)}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;overflow-y:auto;padding:20px 20px 96px}
+.screen.on{display:flex}
+h1{font-size:30px;font-weight:800;line-height:1.1}
+h2{font-size:24px;font-weight:800;line-height:1.15}
+.sub{color:var(--mute);margin-top:6px}
+button{font:inherit;cursor:pointer;border:0;color:inherit;background:none}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.btn{display:block;width:100%;padding:15px;border-radius:16px;font-weight:800;background:var(--plum);color:#fff;text-align:center}
+.btn.coral{background:var(--coral);color:var(--plum2)}
+.btn.ghost{background:transparent;border:2px solid currentColor}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.top .brand{display:flex;align-items:center;gap:8px;font-weight:800}
+.ib{width:42px;height:42px;border-radius:14px;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;position:relative}
+.ib svg,.nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.dot{position:absolute;top:8px;right:9px;width:9px;height:9px;border-radius:50%;background:var(--coral)}
+.back{font-weight:800;color:var(--acc);margin-bottom:14px;text-align:left}
+#welcome{background:var(--plum);color:var(--cream);padding:0;justify-content:space-between}
+#welcome .hero{padding:72px 28px 0;text-align:center}
+#welcome .hero p{font-size:19px;margin-top:10px;opacity:.9}
+#welcome .acts{padding:28px 28px 40px;display:grid;gap:12px;background:var(--plum2);border-radius:28px 28px 0 0}
+#welcome .link{color:var(--cream);font-weight:600;text-decoration:underline;padding:6px}
+label{display:block;font-weight:800;font-size:14px;margin:14px 0 6px}
+input,select{width:100%;padding:14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{padding:7px 13px;border-radius:99px;background:var(--chip);color:var(--acc);font-weight:600;font-size:14px}
+.chip.sel{background:var(--plum);color:#fff}
+.av{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:20px;color:var(--plum2);flex:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px}
+.pcard{margin-top:18px;text-align:center}
+.pcard .av{width:104px;height:104px;font-size:40px;margin:0 auto 14px}
+.pcard .score{display:inline-block;margin-top:10px;font-weight:800;color:var(--plum);background:var(--cream);border-radius:99px;padding:5px 14px}
+.pcard .chips{justify-content:center}
+.pcard p{margin-top:12px;color:var(--mute)}
+.row2{display:grid;grid-template-columns:1fr 1.4fr;gap:12px;margin-top:16px}
+.list{display:grid;gap:10px;margin-top:16px}
+.item{display:flex;align-items:center;gap:14px;padding:14px;background:var(--card);border:1px solid var(--line);border-radius:20px;text-align:left;width:100%}
+.item .t{flex:1;min-width:0}.item b{display:block}.item small{color:var(--mute);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pill{font-size:13px;font-weight:800;color:var(--plum);background:var(--cream);border-radius:99px;padding:4px 10px}
+.nav{position:absolute;left:0;right:0;bottom:0;display:none;grid-template-columns:repeat(4,1fr);background:var(--card);border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px))}
+.nav.on{display:grid}
+.nav button{display:grid;justify-items:center;gap:2px;font-size:12px;font-weight:600;color:var(--mute);padding:6px}
+.nav button.on{color:var(--plum)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .nav button.on{color:var(--coral)}}
+.msgs{display:flex;flex-direction:column;gap:8px;flex:1;margin:6px 0 14px}
+.m{max-width:80%;padding:11px 15px;border-radius:20px;background:var(--card);border:1px solid var(--line)}
+.m.me{align-self:flex-end;background:var(--plum);color:#fff;border-color:var(--plum)}
+.send{display:flex;gap:8px}.send input{flex:1}.send button{width:50px;border-radius:14px;background:var(--coral);color:var(--plum2);font-weight:800;font-size:20px}
+.mic{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:14px;background:var(--cream);color:var(--plum);font-weight:800;margin-bottom:12px}
+.ov{position:absolute;inset:0;background:var(--plum);color:var(--cream);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;gap:14px;z-index:20}
+.ov.on{display:flex}
+.ov .pair{display:flex;margin:10px 0}.ov .pair .av{width:92px;height:92px;font-size:34px;border:4px solid var(--plum)}.ov .pair .av+.av{margin-left:-18px}
+.ov h2{font-size:34px}.ov .btn{max-width:300px}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--card);border-radius:28px 28px 0 0;padding:24px 22px 34px;z-index:15;display:none;box-shadow:0 -10px 40px rgba(30,15,27,.25)}
+.sheet.on{display:block}
+.why{display:flex;gap:12px;margin-top:14px;align-items:flex-start}
+.why i{flex:none;width:34px;height:34px;border-radius:12px;background:var(--cream);color:var(--plum);display:grid;place-items:center;font-style:normal;font-weight:800}
+.empty{color:var(--mute);text-align:center;padding:40px 10px}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--coral);border-radius:99px;transition:width .3s}
+.opts{display:grid;gap:10px;margin-top:20px}.opt{padding:16px;border-radius:16px;background:var(--card);border:1.5px solid var(--line);font-weight:600;text-align:left}.opt.sel{background:var(--plum);color:#fff;border-color:var(--plum)}
+textarea{width:100%;padding:14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit;resize:none}
+.err{color:#B4232A;font-weight:800}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .err{color:#FF9A8A}}
+@media (prefers-reduced-motion:no-preference){.ov.on{animation:pop .35s ease-out}@keyframes pop{from{opacity:0;transform:scale(.97)}}}
+#pc{position:relative;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.st{position:absolute;top:18px;padding:5px 12px;border:3px solid;border-radius:12px;font-weight:800;opacity:0;pointer-events:none}
+.st.l{left:18px;color:var(--mute);transform:rotate(-8deg)}.st.r{right:18px;color:#C2562B;transform:rotate(8deg)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .st.r{color:var(--coral)}}
+.sbrand{display:none}
+@media (min-width:720px){
+#app{max-width:1200px;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.nav{top:0;right:auto;width:230px;grid-template-columns:1fr;align-content:start;gap:6px;padding:28px 16px;border-top:0;border-right:1px solid var(--line)}
+.sbrand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;padding:0 10px 22px}
+.nav button{grid-auto-flow:column;justify-content:start;align-items:center;gap:12px;font-size:16px;padding:13px 14px;border-radius:14px}
+.nav button:hover{background:var(--chip)}.nav button.on{background:var(--chip)}
+.screen{left:230px;padding:36px 40px}
+.screen>*{width:100%;max-width:560px;margin-left:auto;margin-right:auto}
+#chat>*,#agenda>*,#matches>*,#convs>*,#notif>*{max-width:760px}
+#ml,#cl{display:grid;grid-template-columns:1fr 1fr}
+#welcome,#signup,#onboard{left:0}
+#welcome{flex-direction:row;padding:0}
+#welcome>*{max-width:none;margin:0;width:auto}
+#welcome .hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 48px}
+#welcome .hero svg{width:200px;height:158px}
+#welcome .hero h1{font-size:46px}
+#welcome .acts{flex:0 0 400px;justify-content:center;align-content:center;border-radius:0;padding:48px}
+.pcard{padding:34px}
+.ov{left:0}
+.sheet{left:50%;right:auto;bottom:auto;top:50%;width:460px;transform:translate(-50%,-50%);border-radius:28px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<section class="screen on" id="welcome">
+<div class="hero">
+<svg width="132" height="104" viewBox="0 0 150 118" role="img" aria-label="English Match"><g fill="none" stroke-linecap="round" stroke-width="24"><path d="M32 100V58a28 28 0 0 1 56 0v42" stroke="#F6E6D8"/><path d="M88 100V58a28 28 0 0 1 56 0v42" stroke="#E9996B" transform="translate(-14 0)"/></g></svg>
+<h1 style="margin-top:14px">English Match</h1>
+<p>Encontre alguém para praticar inglês.</p>
+</div>
+<div class="acts">
+<button class="btn coral" data-go="signup">Criar minha conta</button>
+<button class="btn ghost" data-go="discover" style="color:var(--cream)">Já tenho uma conta</button>
+<button class="link" data-go="discover">Ver demonstração</button>
+</div>
+</section>
+
+<section class="screen" id="signup">
+<button class="back" data-go="welcome">Voltar</button>
+<h2>Criar seu perfil</h2><p class="sub">Depois, algumas perguntas para achar o match certo.</p>
+<label for="n">Nome</label><input id="n" autocomplete="name">
+<label for="i">Idade</label><input id="i" inputmode="numeric">
+<label for="e">E-mail</label><input id="e" type="email" autocomplete="email">
+<label for="s">Senha</label><input id="s" type="password" autocomplete="new-password">
+<label for="c">Cidade</label><input id="c">
+<button class="btn" data-go="onboard" style="margin-top:26px">Criar conta</button>
+</section>
+
+<section class="screen" id="onboard">
+<button class="back" id="obb">Voltar</button>
+<p class="sub" id="obp" style="margin:0 0 8px"></p>
+<div class="bar"><i id="obf"></i></div>
+<h2 id="obq" style="margin-top:22px"></h2>
+<div class="opts" id="obo"></div>
+<p class="err" id="obe" role="alert" style="margin-top:12px;min-height:22px"></p>
+<button class="btn" id="obn" style="margin-top:auto">Continuar</button>
+</section>
+
+<section class="screen" id="discover">
+<div class="top"><div class="brand"><svg width="34" height="26" viewBox="0 0 150 118" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-width="24"><path d="M32 100V58a28 28 0 0 1 56 0v42" stroke="#5A1F4F"/><path d="M74 100V58a28 28 0 0 1 56 0v42" stroke="#E9996B"/></g></svg>English Match</div>
+<div style="display:flex;gap:8px"><button class="ib" data-go="notif" aria-label="Notificações"><svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6 2 7 2 7H4s2-1 2-7M10 20a2 2 0 0 0 4 0"/></svg><span class="dot"></span></button><button class="ib" data-go="profile" aria-label="Meu perfil"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></button></div></div>
+<h2 id="hi">Olá! Veja quem combina com você</h2>
+<div class="card pcard" id="pc"></div>
+<p class="sub" style="text-align:center;font-size:14px">Arraste o cartão: para a direita para dar match, para a esquerda para pular.</p>
+<div class="row2"><button class="btn ghost" id="pass" style="color:var(--mute)">Pular</button><button class="btn coral" id="like">Quero praticar</button></div>
+</section>
+
+<section class="screen" id="matches">
+<h2>Seus matches</h2><p class="sub">Pessoas com quem você já combinou para praticar.</p>
+<div class="list" id="ml"></div>
+</section>
+
+<section class="screen" id="convs">
+<h2>Conversas</h2>
+<div class="list" id="cl"></div>
+</section>
+
+<section class="screen" id="chat">
+<button class="back" data-go="convs">Voltar</button>
+<div class="item" style="margin-bottom:12px"><div class="av" id="chav"></div><div class="t"><b id="chn"></b><small>Online agora</small></div></div>
+<div class="mic">Praticar conversação por voz</div>
+<div class="msgs" id="msgs"></div>
+<form class="send" id="sf"><input id="mi" placeholder="Escreva uma mensagem" aria-label="Mensagem"><button aria-label="Enviar">&rsaquo;</button></form>
+</section>
+
+<section class="screen" id="agenda">
+<div class="top"><h2>Minha agenda</h2></div>
+<p class="sub">Próximas conversações</p>
+<div class="list" id="al"></div>
+<button class="btn" data-go="book" style="margin-top:18px">Marcar conversação</button>
+</section>
+
+<section class="screen" id="book">
+<button class="back" data-go="agenda">Voltar</button>
+<h2>Marcar conversação</h2>
+<label for="bp">Pessoa</label><select id="bp"></select>
+<label for="bd">Data</label><input id="bd" type="date">
+<label for="bt">Horário</label><input id="bt" type="time" value="19:00">
+<label for="bth">Tema da conversa</label><input id="bth" placeholder="Ex.: planejar uma viagem">
+<button class="btn" id="bok" style="margin-top:26px">Confirmar</button>
+</section>
+
+<section class="screen" id="notif">
+<button class="back" data-go="discover">Voltar</button>
+<h2>Notificações</h2>
+<div class="list"><div class="item"><div class="av" style="background:var(--coral)">M</div><div class="t"><b>Você recebeu um novo match</b><small>Marina quer praticar com você</small></div></div>
+<div class="item"><div class="av" style="background:var(--cream)">A</div><div class="t"><b>Ana enviou uma mensagem</b><small>Há 5 minutos</small></div></div>
+<div class="item"><div class="av" style="background:var(--chip);color:var(--acc)">G</div><div class="t"><b>Conversa com Gabriel amanhã</b><small>19h, tema: viagens</small></div></div></div>
+</section>
+
+<section class="screen" id="profile">
+<button class="back" data-go="discover">Voltar</button>
+<div style="text-align:center"><div class="av" style="width:96px;height:96px;font-size:38px;background:var(--coral);margin:0 auto 12px">R</div><h2 id="pn">Seu nome</h2><p class="sub" id="pl">Intermediário · São Paulo</p></div>
+<div class="card" style="margin-top:18px"><b>Objetivo</b><p class="sub">Conversar com mais confiança em viagens.</p></div>
+<div class="card" style="margin-top:12px"><b>Interesses</b><div class="chips"><span class="chip">Viagens</span><span class="chip">Música</span></div></div>
+<div class="card" style="margin-top:12px"><b>Sobre mim</b><p class="sub">Estudo inglês há dois anos e quero perder a vergonha de falar.</p></div>
+<button class="btn ghost" style="margin-top:18px;color:var(--plum)">Editar perfil</button>
+</section>
+
+<nav class="nav" id="nav" aria-label="Principal">
+<div class="sbrand"><svg width="38" height="30" viewBox="0 0 150 118" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-width="24"><path d="M32 100V58a28 28 0 0 1 56 0v42" stroke="#5A1F4F"/><path d="M74 100V58a28 28 0 0 1 56 0v42" stroke="#E9996B"/></g></svg>English Match</div>
+<button data-go="discover" class="on"><svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/></svg>Início</button>
+<button data-go="matches"><svg viewBox="0 0 24 24"><path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.5A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/></svg>Matches</button>
+<button data-go="convs"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Conversas</button>
+<button data-go="agenda"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Agenda</button>
+</nav>
+
+<div class="ov" id="ov"><svg width="96" height="76" viewBox="0 0 150 118" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-width="24"><path d="M32 100V58a28 28 0 0 1 56 0v42" stroke="#F6E6D8"/><path d="M74 100V58a28 28 0 0 1 56 0v42" stroke="#E9996B"/></g></svg><h2>It’s a Match!</h2><p>Vocês combinaram para praticar inglês.</p><div class="pair" id="pair"></div><button class="btn coral" id="ovc">Conversar</button><button class="btn ghost" id="ovb" style="color:var(--cream)">Marcar conversação</button></div>
+
+<div class="sheet" id="sh"><h2 id="shn" style="font-size:21px"></h2><div id="shl"></div><button class="btn" id="shx" style="margin-top:22px">Entendi</button></div>
+</div>
+
+<script>
+var P=[
+{n:"Ana",a:24,c:"Campinas",l:"Intermediário",col:"#E9996B",i:["Viagens","Séries","Música"],s:92,b:"Quer treinar conversas do dia a dia antes de uma viagem à Irlanda.",w:["Mesmo nível de inglês","Viagens e música em comum","Livre à noite, como você"]},
+{n:"Gabriel",a:28,c:"Curitiba",l:"Avançado",col:"#F6D3B8",i:["Trabalho","Games"],s:81,b:"Pratica inglês para entrevistas e reuniões de trabalho.",w:["Pode ajudar você a avançar de nível","Combina de horário nos fins de semana"]},
+{n:"Marina",a:26,c:"Recife",l:"Intermediário",col:"#D9A8CC",i:["Música","Culinária","Viagens"],s:88,b:"Gosta de trocar receitas e playlists, tudo em inglês.",w:["Mesmo nível de inglês","Música e viagens em comum"]},
+{n:"Lucas",a:31,c:"Porto Alegre",l:"Iniciante",col:"#F3C6A5",i:["Games","Séries"],s:74,b:"Começando agora e procurando alguém paciente.",w:["Você pode ensinar o que já aprendeu","Séries em comum"]}];
+var ag=[{p:"Gabriel",d:"Amanhã",h:"19:00",t:"Viagens"}],matched=[P[0]],idx=0,cur=null,$=function(x){return document.getElementById(x)};
+var main=["discover","matches","convs","agenda"];
+function go(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.toggle("on",s.id==id)});
+var m=main.indexOf(id)>-1||(["chat","book","notif","profile"].indexOf(id)>-1&&matchMedia("(min-width:720px)").matches);$("nav").classList.toggle("on",m);
+document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.dataset.go==id)});
+if(id=="onboard")ob(0);if(id=="matches")rm();if(id=="convs")rc();if(id=="agenda")ra();if(id=="book")rb();document.querySelector(".screen.on").scrollTop=0}
+function av(p,sz){return '<div class="av" style="background:'+p.col+'">'+p.n[0]+'</div>'}
+function rp(){var p=P[idx%P.length];cur=p;$("pc").innerHTML='<span class="st l">Pular</span><span class="st r">Quero praticar</span>'+av(p)+'<h2>'+p.n+', '+p.a+'</h2><p style="margin-top:4px">'+p.c+' · '+p.l+'</p><div class="chips">'+p.i.map(function(x){return '<span class="chip">'+x+'</span>'}).join("")+'</div><p>'+p.b+'</p><button class="score" id="why">'+p.s+'% de compatibilidade</button>'}
+function rm(){$("ml").innerHTML=matched.length?matched.map(function(p,k){return '<button class="item" data-chat="'+P.indexOf(p)+'">'+av(p)+'<div class="t"><b>'+p.n+', '+p.a+'</b><small>'+p.l+' · '+p.i.slice(0,2).join(", ")+'</small></div><span class="pill">'+p.s+'%</span></button>'}).join(""):'<p class="empty">Você ainda não tem matches. Volte ao início e escolha alguém.</p>'}
+function rc(){$("cl").innerHTML=matched.length?matched.map(function(p){return '<button class="item" data-chat="'+P.indexOf(p)+'">'+av(p)+'<div class="t"><b>'+p.n+'</b><small>Toque para conversar</small></div></button>'}).join(""):'<p class="empty">Suas conversas aparecem aqui depois do primeiro match.</p>'}
+function ra(){$("al").innerHTML=ag.length?ag.map(function(a){return '<div class="item"><div class="av" style="background:var(--cream);font-size:15px;color:var(--plum)">'+a.h+'</div><div class="t"><b>Conversa com '+a.p+'</b><small>'+a.d+' · tema: '+(a.t||"livre")+'</small></div></div>'}).join(""):'<p class="empty">Nenhuma conversa marcada. Que tal combinar um horário?</p>'}
+function rb(){$("bp").innerHTML=matched.map(function(p){return '<option>'+p.n+'</option>'}).join("")}
+var chatP=null,msgs={};
+function oc(i){chatP=P[i];$("chav").style.background=chatP.col;$("chav").textContent=chatP.n[0];$("chn").textContent=chatP.n;
+if(!msgs[chatP.n])msgs[chatP.n]=[["Hi! Nice to meet you.",0],["Oi! Que bom, vamos praticar?",1],["Sure! What did you do today?",0]];rmsg();go("chat")}
+function rmsg(){$("msgs").innerHTML=msgs[chatP.n].map(function(m){return '<div class="m'+(m[1]?" me":"")+'">'+m[0]+'</div>'}).join("")}
+document.addEventListener("click",function(e){var t=e.target.closest("[data-go]");if(t){go(t.dataset.go);return}
+t=e.target.closest("[data-chat]");if(t){oc(+t.dataset.chat);return}
+t=e.target.closest(".chips .chip");if(t&&t.parentNode.id){if(t.parentNode.id=="lv")t.parentNode.querySelectorAll(".chip").forEach(function(c){c.classList.remove("sel")});t.classList.toggle("sel",t.parentNode.id=="lv"||!t.classList.contains("sel"))}
+if(e.target.id=="why"){$("shn").textContent="Por que você e "+cur.n+" combinam";$("shl").innerHTML=cur.w.map(function(w,k){return '<div class="why"><i>'+(k+1)+'</i><span>'+w+'</span></div>'}).join("");$("sh").classList.add("on")}});
+$("shx").onclick=function(){$("sh").classList.remove("on")};
+$("pass").onclick=function(){idx++;rp()};
+$("like").onclick=function(){if(matched.indexOf(cur)<0)matched.push(cur);$("pair").innerHTML='<div class="av" style="background:var(--coral)">R</div>'+av(cur);$("ov").classList.add("on")};
+$("ovc").onclick=function(){$("ov").classList.remove("on");idx++;rp();oc(P.indexOf(cur==null?P[0]:matched[matched.length-1]))};
+$("ovb").onclick=function(){$("ov").classList.remove("on");idx++;rp();go("book")};
+$("sf").onsubmit=function(e){e.preventDefault();var v=$("mi").value.trim();if(!v)return;msgs[chatP.n].push([v,1]);$("mi").value="";rmsg();setTimeout(function(){msgs[chatP.n].push(["Great! Tell me more.",0]);rmsg()},900)};
+$("bok").onclick=function(){var d=$("bd").value;ag.push({p:$("bp").value,d:d?d.split("-").reverse().join("/"):"A combinar",h:$("bt").value,t:$("bth").value});go("agenda")};
+var Q=[{q:"Qual é o seu nível de inglês?",o:["Iniciante","Intermediário","Avançado"],m:0},{q:"Qual é o seu objetivo?",o:["Viajar","Trabalho","Estudos","Conversar por prazer"],m:0},{q:"Do que você gosta de falar?",o:["Viagens","Séries","Música","Trabalho","Games","Culinária"],m:1},{q:"Quando você costuma estar livre?",o:["Manhã","Tarde","Noite","Fins de semana"],m:1},{q:"Quanto tempo você quer em cada conversa?",o:["15 minutos","30 minutos","1 hora"],m:0},{q:"Conte um pouco sobre você",t:1}],st=0,ans=[];
+function ob(k){st=k;var q=Q[k];ans[k]=ans[k]||[];$("obp").textContent="Pergunta "+(k+1)+" de "+Q.length;$("obf").style.width=((k+1)/Q.length*100)+"%";$("obq").textContent=q.q;$("obe").textContent="";
+$("obo").innerHTML=q.t?'<textarea id="obt" rows="4" placeholder="Ex.: estudo inglês há dois anos e quero perder a vergonha de falar" aria-label="Sobre você"></textarea>':q.o.map(function(o){return '<button class="opt'+(ans[k].indexOf(o)>-1?' sel':'')+'">'+o+'</button>'}).join("");
+$("obn").textContent=k==Q.length-1?"Finalizar cadastro":"Continuar";if(q.t&&ans[k][0])$("obt").value=ans[k][0]}
+$("obo").onclick=function(e){var b=e.target.closest(".opt");if(!b)return;var q=Q[st];if(!q.m)this.querySelectorAll(".opt").forEach(function(x){x.classList.remove("sel")});b.classList.toggle("sel",q.m?!b.classList.contains("sel"):true);ans[st]=[].slice.call(this.querySelectorAll(".sel")).map(function(x){return x.textContent});$("obe").textContent=""};
+$("obn").onclick=function(){var q=Q[st];if(q.t){ans[st]=[$("obt").value.trim()]}else if(!ans[st].length){$("obe").textContent="Escolha uma opção para continuar.";return}if(st<Q.length-1)ob(st+1);else fin()};
+$("obb").onclick=function(){if(st)ob(st-1);else go("signup")};
+function fin(){var n=$("n").value.trim();if(n){$("hi").textContent="Olá, "+n+"! Veja quem combina com você";$("pn").textContent=n}$("pl").textContent=ans[0][0]+" · "+($("c").value.trim()||"Brasil");go("discover")}
+(function(){var c=$("pc"),sx=0,dx=0,down=false,drag=false,pid;
+c.addEventListener("pointerdown",function(e){if(e.target.closest("button"))return;down=true;drag=false;sx=e.clientX;dx=0;pid=e.pointerId;c.style.transition="none"});
+c.addEventListener("pointermove",function(e){if(!down)return;dx=e.clientX-sx;if(!drag&&Math.abs(dx)>6){drag=true;c.setPointerCapture(pid)}if(!drag)return;c.style.transform="translateX("+dx+"px) rotate("+dx/20+"deg)";c.querySelector(".st.r").style.opacity=Math.max(0,Math.min(1,dx/100));c.querySelector(".st.l").style.opacity=Math.max(0,Math.min(1,-dx/100))});
+function end(){if(!down)return;down=false;if(!drag)return;drag=false;c.style.transition="transform .25s ease-out";
+if(Math.abs(dx)>100){var dir=dx>0?1:-1;c.style.transform="translateX("+dir*600+"px) rotate("+dir*25+"deg)";setTimeout(function(){c.style.transition="none";c.style.transform="";c.querySelectorAll(".st").forEach(function(s){s.style.opacity=0});(dir>0?$("like"):$("pass")).click()},230)}
+else{c.style.transform="";c.querySelectorAll(".st").forEach(function(s){s.style.opacity=0})}}
+c.addEventListener("pointerup",end);c.addEventListener("pointercancel",end)})();
+rp();
+</script>
+</body>
+</html>
